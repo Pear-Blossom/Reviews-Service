@@ -1,0 +1,28 @@
+{
+  "name": "reviews-service",
+  "version": "1.0.0",
+  "description": "Reviews Service for Project Catwalk",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pear-Blossom/Reviews-Service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pear-Blossom/Reviews-Service/issues"
+  },
+  "homepage": "https://github.com/Pear-Blossom/Reviews-Service#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "underscore": "^1.12.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb": "^18.2.1"
+  }
+}
