@@ -2,7 +2,7 @@ const db = require('../model/mongodb.js');
 const { transformReviews, populateWithPhotos } = require('../utils/transformReviews.js');
 const {
   transformCharacteristics, collectReviewIds,
-  populateCharacteristicAverages, populateRatingAverages, populateRecommendedCounts
+  populateCharacteristicAverages, populateRatingAverages, populateRecommendedCounts,
 } = require('../utils/transformMeta.js');
 
 // module.exports.getReviews = (params) => db.getReviews(params.product_id, params.limit);
@@ -32,19 +32,15 @@ module.exports.getMeta = async (req, res) => {
   try {
     const characteristics = await db.getCharacteristics(productId);
     let meta = transformCharacteristics(productId, characteristics);
-    // console.log(characteristics);
     let reviews = await db.getReviewIds(productId);
     reviews = collectReviewIds(reviews);
-    // console.log(reviews);
     const characteristicAverages = await db.getAggregatedCharacteristics(reviews);
-    // console.log(characteristicAverages);
     meta = populateCharacteristicAverages(meta, characteristics, characteristicAverages);
     const ratingAverages = await db.getAggregatedRatings(reviews);
-    // console.log(ratingAverages);
+    meta = populateRatingAverages(meta, ratingAverages);
     const recommendCounts = await db.getAggregatedRecommend(reviews);
-    console.log(recommendCounts);
-    console.log(meta);
-    res.send(200);
+    const payload = populateRecommendedCounts(meta, recommendCounts);
+    res.status(200).send(payload);
   } catch (err) {
     console.error(err);
     res.sendStatus(404);
