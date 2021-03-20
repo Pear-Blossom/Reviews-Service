@@ -116,16 +116,19 @@ const addReview = (bodyParams) => {
   getNextId('review_id')
     .then((reviewCounter) => {
       newReviewId = reviewCounter.value;
+      console.log(bodyParams.recommend);
       return Reviews.create({
         review_id: newReviewId,
         product_id: Number(bodyParams.product_id),
         rating: Number(bodyParams.rating),
         summary: bodyParams.summary,
-        recommend: bodyParams.recommend === 'true',
+        recommend: bodyParams.recommend,
+        reported: false,
         body: bodyParams.body,
         date: new Date(),
         reviewer_name: bodyParams.name,
         reviewer_email: bodyParams.email,
+        helpfulness: 0,
       });
     })
     .then(() => {
@@ -163,6 +166,16 @@ const addReview = (bodyParams) => {
     });
 };
 
+const markHelpful = (reviewId) => Reviews.findOneAndUpdate(
+  { review_id: reviewId },
+  { $inc: { helpfulness: 1 } },
+);
+
+const markReported = (reviewId) => Reviews.findOneAndUpdate(
+  { review_id: reviewId },
+  { $set: { reported: true } },
+);
+
 module.exports.getReviews = getReviews;
 module.exports.getPhotos = getPhotos;
 module.exports.getCharacteristics = getCharacteristics;
@@ -171,3 +184,5 @@ module.exports.getAggregatedCharacteristics = getAggregatedCharacteristics;
 module.exports.getAggregatedRatings = getAggregatedRatings;
 module.exports.getAggregatedRecommend = getAggregatedRecommend;
 module.exports.addReview = addReview;
+module.exports.markHelpful = markHelpful;
+module.exports.markReported = markReported;
