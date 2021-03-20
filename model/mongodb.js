@@ -68,7 +68,7 @@ const getAggregatedCharacteristics = (reviewIds) => CharacteristicReviews
 const getAggregatedRatings = (reviewIds) => Reviews
   .aggregate([
     { $match: { review_id: { $in: reviewIds } } },
-    { $group: { _id: '$rating', avg: { $avg: '$rating' } } },
+    { $group: { _id: '$rating', count: { $sum: 1 } } },
   ]);
 
 const getAggregatedRecommend = (reviewIds) => Reviews
