@@ -48,7 +48,7 @@ const CharacteristicReviews = mongoose.model('characteristic_reviews', character
 const Counters = mongoose.model('counters', countersSchema);
 
 const getReviews = (productId, limit) => Reviews.find({ product_id: productId })
-  .select({ _id: 0, product_id: 0, date: 0 })
+  .select({ _id: 0, product_id: 0 })
   .limit(limit)
   .lean();
 
