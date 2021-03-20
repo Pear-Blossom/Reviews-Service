@@ -5,7 +5,6 @@ const {
   populateCharacteristicAverages, populateRatingAverages, populateRecommendedCounts,
 } = require('../utils/transformMeta.js');
 
-// module.exports.getReviews = (params) => db.getReviews(params.product_id, params.limit);
 module.exports.getReviews = async (req, res) => {
   const queryParams = {
     page: Number(req.query.page) || 1,
@@ -41,6 +40,17 @@ module.exports.getMeta = async (req, res) => {
     const recommendCounts = await db.getAggregatedRecommend(reviews);
     const payload = populateRecommendedCounts(meta, recommendCounts);
     res.status(200).send(payload);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(404);
+  }
+};
+
+module.exports.addReview = async (req, res) => {
+  console.log(req.body.photos);
+  try {
+    await db.addReview(req.body);
+    res.sendStatus(201);
   } catch (err) {
     console.error(err);
     res.sendStatus(404);
