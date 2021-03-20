@@ -47,10 +47,28 @@ module.exports.getMeta = async (req, res) => {
 };
 
 module.exports.addReview = async (req, res) => {
-  console.log(req.body.photos);
   try {
     await db.addReview(req.body);
     res.sendStatus(201);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(404);
+  }
+};
+
+module.exports.markHelpful = async (req, res) => {
+  try {
+    await db.markHelpful(Number(req.params.review_id));
+    res.sendStatus(204);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(404);
+  }
+};
+module.exports.markReported = async (req, res) => {
+  try {
+    await db.markReported(Number(req.params.review_id));
+    res.sendStatus(204);
   } catch (err) {
     console.error(err);
     res.sendStatus(404);
