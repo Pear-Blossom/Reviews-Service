@@ -1,4 +1,5 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
+/* eslint no-underscore-dangle: 0 */
 
 module.exports.transformCharacteristics = (productId, characteristics) => {
   const meta = { product_id: productId, characteristics: {} };
@@ -35,9 +36,18 @@ module.exports.populateCharacteristicAverages = (meta, characteristics, characte
 };
 
 module.exports.populateRatingAverages = (meta, ratingAverages) => {
+  meta.ratings = {};
 
+  ratingAverages.forEach((ratingAverage) => {
+    meta.ratings[ratingAverage._id] = ratingAverage.count;
+  });
+
+  return meta;
 };
 
-module.exports.populateRecommendedCounts = (meta, ratingAverages) => {
-
+module.exports.populateRecommendedCounts = (meta, recommendedCounts) => {
+  meta.recommended = {};
+  meta.recommended.true = recommendedCounts[0].recommendCount;
+  meta.recommended.false = recommendedCounts[0].notRecommendCount;
+  return meta;
 };
