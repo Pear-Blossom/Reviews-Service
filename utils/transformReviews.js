@@ -4,7 +4,7 @@
 // update to an acceptable format
 module.exports.transformReviews = (product, reviews) => {
   const transformedReviews = {
-    product: Number(product),
+    product,
     page: 0,
     count: reviews.length,
     results: [],
@@ -13,8 +13,9 @@ module.exports.transformReviews = (product, reviews) => {
   const reviewIds = [];
 
   reviews.forEach((review) => {
-    delete review.date;
+    delete review.reviewer_email;
     delete review.product_id;
+    review.date = new Date(review.date);
     if (!review.reported || review.reported === 'false') {
       // delete review.reported;
       reviewIds.push(review.review_id);

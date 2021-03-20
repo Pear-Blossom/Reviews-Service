@@ -2,7 +2,7 @@
 /* eslint no-underscore-dangle: 0 */
 
 module.exports.transformCharacteristics = (productId, characteristics) => {
-  const meta = { product_id: productId, characteristics: {} };
+  const meta = { product_id: productId.toString(), characteristics: {} };
 
   characteristics.forEach((char) => {
     meta.characteristics[char.name] = {};
