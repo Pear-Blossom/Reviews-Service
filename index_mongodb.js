@@ -3,7 +3,6 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const controller = require('./controller/mongodb.js');
-// const { transformReviews, populateWithPhotos } = require('./utils/transformReviews.js');
 
 const app = express();
 app.use(morgan('tiny'));
