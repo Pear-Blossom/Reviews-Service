@@ -36,9 +36,18 @@ module.exports.getMeta = async (req, res) => {
   const client = await pool.connect();
   try {
     const ratingsAndRecommended = await getRatingsAndRecommended(client, productId);
-    const characteristics = await getCharacteristics(client, productId);
-    const payload = transformMeta(ratingsAndRecommended.rows[0], characteristics.rows);
-    res.status(200).send(payload);
+    if (ratingsAndRecommended.rows[0]) {
+      const characteristics = await getCharacteristics(client, productId);
+      const payload = transformMeta(ratingsAndRecommended.rows[0], characteristics.rows);
+      res.status(200).send(payload);
+    }
+    const noResult = {
+      product_id: productId.toString(),
+      ratings: {},
+      recommended: {},
+      characteristics: {},
+    };
+    res.status(200).send(noResult);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
