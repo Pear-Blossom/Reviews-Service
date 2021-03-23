@@ -17,13 +17,14 @@ module.exports.transformReviews = (productId, count, queryResults) => {
           rating: result.rating,
           summary: result.summary,
           recommend: result.recommend,
-          response: result.response,
           body: result.body,
           date: result.date,
           reviewer_name: result.reviewer_name,
           helpfulness: result.helpfulness,
           photos: [],
         };
+
+        if (result.response !== 'null') tempReview.response = result.response;
 
         if (result.review_photo_id) {
           tempReview.photos.push({
