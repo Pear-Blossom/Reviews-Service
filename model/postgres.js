@@ -30,7 +30,6 @@ module.exports.getRatingsAndRecommended = (client, productId) => {
     FROM reviews
     WHERE
       product_id = $1
-      AND reported = FALSE
     GROUP BY product_id
   `;
 
