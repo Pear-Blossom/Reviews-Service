@@ -40,14 +40,14 @@ module.exports.getMeta = async (req, res) => {
       const characteristics = await getCharacteristics(client, productId);
       const payload = transformMeta(ratingsAndRecommended.rows[0], characteristics.rows);
       res.status(200).send(payload);
+    } else {
+      res.status(200).send({
+        product_id: productId.toString(),
+        ratings: {},
+        recommended: {},
+        characteristics: {},
+      });
     }
-    const noResult = {
-      product_id: productId.toString(),
-      ratings: {},
-      recommended: {},
-      characteristics: {},
-    };
-    res.status(200).send(noResult);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
