@@ -39,13 +39,9 @@ module.exports.getRatingsAndRecommended = (client, productId) => {
 module.exports.getCharacteristics = (client, productId) => {
   const query = `
     SELECT c.id, c.name, AVG(cr.value) AS average
-    FROM characteristic_reviews cr
-    JOIN characteristics c ON cr.characteristic_id = c.id
-    WHERE cr.review_id IN (
-      SELECT id
-      FROM reviews
-      WHERE product_id = $1
-    )
+    FROM characteristics c
+    JOIN characteristic_reviews cr ON c.id = cr.characteristic_id
+    WHERE c.product_id = $1
     GROUP BY c.id, c.name
     ORDER BY c.id ASC
   `;
