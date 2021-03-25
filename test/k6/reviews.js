@@ -8,19 +8,19 @@ import http from 'k6/http';
 export let options = {
     maxRedirects: 0,
 		stages : [
-			{ target: 50, duration: '30s'},
-			{ target: 50, duration: '1m'},
-			{ target: 0, duration: '30s'}
+			{ target: 1500, duration: '15s'},
+			{ target: 1500, duration: '30s'},
+			{ target: 0, duration: '15s'}
 		]
 };
 
 export default function() {
 
-	group("page_31 - http://localhost:3000/", function() {
+	group("http://localhost:1337/", function() {
 		let req, res;
 		req = [{
 			"method": "get",
-			"url": "http://localhost:3000/reviews/meta/13023",
+			"url": "http://localhost:1337/reviews/meta/?product_id=843032",
 			"params": {
 				"headers": {
 					"Host": "localhost:3000",
@@ -43,27 +43,7 @@ export default function() {
 		sleep(0.65);
 		req = [{
 			"method": "get",
-			"url": "http://localhost:3000/reviews/sort/relevant/product/13023",
-			"params": {
-				"headers": {
-					"Host": "localhost:3000",
-					"Connection": "keep-alive",
-					"sec-ch-ua": "\"Google Chrome\";v=\"89\", \"Chromium\";v=\"89\", \";Not A Brand\";v=\"99\"",
-					"Accept": "application/json, text/plain, */*",
-					"sec-ch-ua-mobile": "?0",
-					"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36",
-					"Sec-Fetch-Site": "same-origin",
-					"Sec-Fetch-Mode": "cors",
-					"Sec-Fetch-Dest": "empty",
-					"Referer": "http://localhost:3000/",
-					"Accept-Encoding": "gzip, deflate, br",
-					"Accept-Language": "en-US,en;q=0.9",
-					"If-None-Match": "W/\"2988-0StDjlK8lByPO5MVbrV4l0K1R3I\""
-				}
-			}
-		},{
-			"method": "get",
-			"url": "http://localhost:3000/reviews/meta/13024",
+			"url": "http://localhost:1337/reviews/meta/?product_id=4332",
 			"params": {
 				"headers": {
 					"Host": "localhost:3000",
@@ -83,7 +63,7 @@ export default function() {
 			}
 		},{
 			"method": "get",
-			"url": "http://localhost:3000/reviews/meta/13025",
+			"url": "http://localhost:1337/reviews/meta/?product_id=342",
 			"params": {
 				"headers": {
 					"Host": "localhost:3000",
@@ -103,7 +83,7 @@ export default function() {
 			}
 		},{
 			"method": "get",
-			"url": "http://localhost:3000/reviews/meta/13030",
+			"url": "http://localhost:1337/reviews/meta/?product_id=843152",
 			"params": {
 				"headers": {
 					"Host": "localhost:3000",
@@ -123,7 +103,7 @@ export default function() {
 			}
 		},{
 			"method": "get",
-			"url": "http://localhost:3000/reviews/meta/13029",
+			"url": "http://localhost:1337/reviews/meta/?product_id=84362",
 			"params": {
 				"headers": {
 					"Host": "localhost:3000",
