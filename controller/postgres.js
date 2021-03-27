@@ -17,28 +17,23 @@ module.exports.getReviews = async (req, res) => {
     product_id: Number(req.query.product_id),
   };
 
-  const clientReviews = await poolReviews.connect();
   try {
-    const results = await getAllReviews(clientReviews, queryParams);
+    const results = await getAllReviews(poolReviews, queryParams);
     const payload = transformReviews(queryParams.product_id, queryParams.count, results.rows);
     res.status(200).send(payload);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
-  } finally {
-    clientReviews.release();
   }
 };
 
 module.exports.getMeta = async (req, res) => {
   const productId = Number(req.query.product_id);
 
-  const clientReviews = await poolReviews.connect();
-  const clientCharacteristics = await poolCharacteristics.connect();
   try {
-    const ratingsAndRecommended = await getRatingsAndRecommended(clientReviews, productId);
+    const ratingsAndRecommended = await getRatingsAndRecommended(poolReviews, productId);
     if (ratingsAndRecommended.rows[0]) {
-      const characteristics = await getCharacteristics(clientCharacteristics, productId);
+      const characteristics = await getCharacteristics(poolCharacteristics, productId);
       const payload = transformMeta(ratingsAndRecommended.rows[0], characteristics.rows);
       res.status(200).send(payload);
     } else {
@@ -52,54 +47,43 @@ module.exports.getMeta = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
-  } finally {
-    clientReviews.release();
-    clientCharacteristics.release();
   }
 };
 
 module.exports.addReview = async (req, res) => {
   const clientReviews = await poolReviews.connect();
-  const clientCharacteristics = await poolCharacteristics.connect();
   try {
     const newReview = await addReview(clientReviews, req.body);
     const newReviewId = newReview.rows[0].id;
     if (req.body.photos.length > 0) {
       await addPhotos(clientReviews, newReviewId, req.body.photos);
     }
-    await addCharacteristicReviews(clientCharacteristics, newReviewId, req.body.characteristics);
+    clientReviews.release();
+    await addCharacteristicReviews(poolCharacteristics, newReviewId, req.body.characteristics);
     res.sendStatus(201);
   } catch (error) {
+    clientReviews.release();
     console.error(error);
     res.sendStatus(404);
-  } finally {
-    clientReviews.release();
-    clientCharacteristics.release();
   }
 };
 
 module.exports.markHelpful = async (req, res) => {
-  const clientReviews = await poolReviews.connect();
   try {
-    await markHelpful(clientReviews, Number(req.params.review_id));
+    await markHelpful(poolReviews, Number(req.params.review_id));
     res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
-  } finally {
-    clientReviews.release();
   }
 };
 
 module.exports.markReported = async (req, res) => {
-  const clientReviews = await poolReviews.connect();
   try {
-    await report(clientReviews, Number(req.params.review_id));
+    await report(poolReviews, Number(req.params.review_id));
     res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
-  } finally {
-    clientReviews.release();
   }
 };
