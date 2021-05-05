@@ -34,7 +34,7 @@ module.exports.getMeta = async (req, res) => {
   const productId = Number(req.query.product_id);
 
   const clientReviews = await poolReviews.connect();
-  const clientCharacteristics = await poolCharacteristics.connect();
+  const clientCharacteristics = await poolReviews.connect();
   try {
     const ratingsAndRecommended = await getRatingsAndRecommended(clientReviews, productId);
     if (ratingsAndRecommended.rows[0]) {
@@ -60,7 +60,7 @@ module.exports.getMeta = async (req, res) => {
 
 module.exports.addReview = async (req, res) => {
   const clientReviews = await poolReviews.connect();
-  const clientCharacteristics = await poolCharacteristics.connect();
+  const clientCharacteristics = await poolReviews.connect();
   try {
     const newReview = await addReview(clientReviews, req.body);
     const newReviewId = newReview.rows[0].id;
